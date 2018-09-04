@@ -15,3 +15,6 @@ class PlayerWizard extends Sprite{
 }
 
 let marcus = new PlayerWizard();
+
+// is there supposed to be a loader.js for this game?
+
