@@ -16,10 +16,16 @@ class Spell extends Sprite{
         game.removeSprite(this);
     }
     handleCollision(otherSprite) {
+        // Compare images so Stranger's spells don't destroy each other.
         if (this.getImage() !== otherSprite.getImage()) {
-            game.removeSprite(this);
-            new Fireball(otherSprite);
+        // Adjust mostly blank spell image to vertical center.
+            let verticalOffset = Math.abs(this.y - otherSprite.y);
+            if (verticalOffset < this.height / 2) {
+                game.removeSprite(this);
+                new Fireball(otherSprite);
+            }
         }
+        return false;
     }
 }
 
@@ -49,17 +55,18 @@ class PlayerWizard extends Sprite{
         this.angle = 90;
     }
     handleGameLoop() {
-        this.y = Math.max(1, this.y); // Keep Marcus in the display area
+        this.y = Math.max(5, this.y); // Keep Marcus in the display area
         this.y = Math.min(552, this.y);
     }
     handleSpacebar() {
         let spell = new Spell();
-        spell.x = this.x; // this sets the position of the spell object equal to 
-        spell.y = this.y; // the position of any object created from the PlayerWizard class
+        spell.x = this.x + 48; 
+        // this sets the position of the spell object equal to 
+        // the position of any object created from the PlayerWizard class
+        spell.y = this.y; 
         spell.name = "A spell cast by Marcus";
         spell.setImage("marcusSpellSheet.png");
         spell.angle = 0;
-        
         this.playAnimation("right", false);
     }
 }
@@ -85,16 +92,28 @@ class NonPlayerWizard extends Sprite{
         this.y = Math.max(0, this.y);
         this.y = Math.min(552, this.y);
         if (this.y <= 0) {
-            // Upward motion has reached top, so turn down
+        // Upward motion has reached top, so turn down
             this.y = 0;
             this.angle = 270;
             this.playAnimation("down");
         }
         if (this.y >= game.displayHeight - this.height) {
-         // Downward motion has reached bottom, so turn up
+        // Downward motion has reached bottom, so turn up
             this.y = game.displayHeight - this.height;
             this.angle = 90;
             this.playAnimation("up");
+        }
+        let spell = new Spell();
+        // random behavior
+        if (Math.random() < 0.01) {
+            spell.x = this.x - 48; 
+            // this sets the position of the spell object equal to 
+            // the position of any object created from the PlayerWizard class
+            spell.y = this.y; 
+            spell.name = "A spell cast by the stranger";
+            spell.setImage("strangerSpellSheet.png");
+            spell.angle = 180;
+            this.playAnimation("left", false);
         }
     }
 }
@@ -109,7 +128,18 @@ class Fireball extends Sprite {
         this.setImage("fireballSheet.png");
         this.name = "A ball of fire";
         game.removeSprite(deadSprite);
-        this.defineAnimation("explode", 0, 7)
-        this.playAnimation("explode")
+        this.defineAnimation("explode", 0, 7);
+        this.playAnimation("explode");
+    }
+    handleAnimationEnd() {
+        game.removeSprite(this);
+        if (!game.isActiveSprite(stranger)) {
+            game.end("Congratulations!\n\nMarcus has defeated the mysterious"
+            + "\nstranger in the dark cloak!");
+        }
+        if (!game.isActiveSprite(marcus)) {
+            game.end("Marcus is defeated by the mysterious\nstranger in "
+            +"the dark cloak!\n\nBetter luck next time.");
+        }
     }
 }
