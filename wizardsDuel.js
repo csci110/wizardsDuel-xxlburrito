@@ -42,7 +42,7 @@ class PlayerWizard extends Sprite{
         this.defineAnimation("up", 0, 2);
         this.defineAnimation("right", 3, 5);
         this.speedWhenWalking = 100;
-        
+        this.spellCastTime = 0;
     }
     handleDownArrowKey() {
         this.playAnimation("down");
@@ -59,15 +59,22 @@ class PlayerWizard extends Sprite{
         this.y = Math.min(552, this.y);
     }
     handleSpacebar() {
-        let spell = new Spell();
-        spell.x = this.x + 48; 
-        // this sets the position of the spell object equal to 
-        // the position of any object created from the PlayerWizard class
-        spell.y = this.y; 
-        spell.name = "A spell cast by Marcus";
-        spell.setImage("marcusSpellSheet.png");
-        spell.angle = 0;
-        this.playAnimation("right", false);
+        let now = game.getTime(); // get the number of seconds since game start
+        // if the current time is 2 or more seconds greater than the previous spellCastTime 
+        if (now - this.spellCastTime >= 2) { 
+        // reset the timer                               
+            this.spellCastTime = now;
+        // and cast a spell 
+            let spell = new Spell();
+            spell.x = this.x + 48; 
+            // this sets the position of the spell object equal to 
+            // the position of any object created from the PlayerWizard class
+            spell.y = this.y; 
+            spell.name = "A spell cast by Marcus";
+            spell.setImage("marcusSpellSheet.png");
+            spell.angle = 0;
+            this.playAnimation("right", false);
+        }
     }
 }
 
@@ -103,9 +110,9 @@ class NonPlayerWizard extends Sprite{
             this.angle = 90;
             this.playAnimation("up");
         }
-        let spell = new Spell();
         // random behavior
         if (Math.random() < 0.01) {
+            let spell = new Spell();
             spell.x = this.x - 48; 
             // this sets the position of the spell object equal to 
             // the position of any object created from the PlayerWizard class
