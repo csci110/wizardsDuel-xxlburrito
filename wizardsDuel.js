@@ -61,7 +61,7 @@ class PlayerWizard extends Sprite{
     handleSpacebar() {
         let now = game.getTime(); // get the number of seconds since game start
         // if the current time is 2 or more seconds greater than the previous spellCastTime 
-        if (now - this.spellCastTime >= 2) { 
+        if (now - this.spellCastTime >= 1.5) { 
         // reset the timer                               
             this.spellCastTime = now;
         // and cast a spell 
