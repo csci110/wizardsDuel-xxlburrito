@@ -1,8 +1,8 @@
 import {game} from "./sgc/sgc.js";
 
-game.preloadImage("gray.png");
-game.preloadImage("galaxySheet.png", 48, 48);
-game.preloadImage("gliderSheet.png", 48, 48);
-game.preloadImage("gliderSheetRed.png", 48, 48);
-game.preloadImage("dot.png", 48, 48);
-game.preloadImage("otherDot.png", 48, 48);
+game.preloadImage("explosionSheet.png", 72, 72);
+game.preloadImage("greenLaser.png", 72, 72);
+game.preloadImage("redLaser.png", 72, 72);
+game.preloadImage("tieFighter.png", 72, 72);
+game.preloadImage("universe.png", 800, 600);
+game.preloadImage("xWing.png", 72, 72);
