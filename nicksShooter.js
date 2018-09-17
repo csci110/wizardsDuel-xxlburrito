@@ -72,6 +72,7 @@ class Rebel extends Sprite{
             laser.setImage("redLaser.png");
             laser.angle = 90;
         }    
+        //https://www.moddb.com/mods/empire-at-war-re/images/new-turbolaser-textures
     }
 }
 
